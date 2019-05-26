@@ -37,7 +37,6 @@ class Game {
   }
 
   handleAnswerRes(id, idx) {
-    console.log(id + ' ' + idx)
     this.answers.set(id, idx)
   }
 
@@ -62,7 +61,6 @@ class Game {
   advanceRound() {
     for (const p of game.players.values()) {
       const ans = this.answers.get(p.id)
-      console.log(`${this.currentQ.answer}, ${ans}`)
       const correct = (ans === this.currentQ.answer)
       send(p.socket, 'round-end', { correct: correct })
     }
@@ -71,6 +69,13 @@ class Game {
 
   isFinished() {
     return this.roundNumber >= this.questions.length
+  }
+
+  end() {
+    this.broadcast('game-end', {})
+    for (const p of this.players.values()) {
+      p.socket.close()
+    }
   }
 
   tick() {
@@ -107,6 +112,14 @@ const questions = [
     ],
     answer: 0,
     duration: 2000
+  },
+  {
+    question: "What org did Kampy play for?",
+    choices: [
+      'FaZe', 'Optic', 'BLMS', 'Liquid'
+    ],
+    answer: 0,
+    duration: 1500
   }
 ]
 const game = new Game(questions)
@@ -122,7 +135,6 @@ wss.on('connection', socket => {
         send(socket, 'uuid-res', { id: id })
         break
       case 'round-res':
-        console.log(data.idx)
         game.handleAnswerRes(data.user.id, data.idx)
         break
       default:
@@ -132,7 +144,11 @@ wss.on('connection', socket => {
 })
 
 function tick() {
-  game.print()
+  if (game.isFinished()) {
+    clearInterval(intervalId)
+    return
+  }
+  // game.print()
   if (game.players.size > 1 && game.state === GameState.LOBBY) {
     game.startRound()
   }
@@ -140,8 +156,12 @@ function tick() {
   if (game.state === GameState.ROUNDS) {
     if (game.roundShouldEnd()) {
       game.advanceRound()
-      if (game.isFinished())
+      if (game.isFinished()) {
         clearInterval(intervalId)
+        game.end()
+      } else {
+        game.startRound()
+      }
     } else {
       game.tick()
     }

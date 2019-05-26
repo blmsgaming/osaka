@@ -40,6 +40,12 @@ socket.addEventListener('message', event => {
         console.log('Wrong answer')
       }
       break
+    case 'round-tick':
+      console.log(`time left: ${data.timeLeft}`)
+      break
+    case 'game-end':
+      console.log('Game ended!')
+      break
     default:
       console.log(`Bad eventName: ${data.eventName}`)
   }
