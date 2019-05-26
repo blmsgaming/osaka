@@ -13,6 +13,22 @@ function send(socket, eventName, payload) {
   socket.send(JSON.stringify(merged))
 }
 
+function shuffle(array) {
+  let counter = array.length;
+
+  while (counter > 0) {
+      let index = Math.floor(Math.random() * counter);
+
+      counter--;
+
+      let temp = array[counter];
+      array[counter] = array[index];
+      array[index] = temp;
+  }
+
+  return array;
+}
+
 class Game {
   constructor(questions) {
     this.players = new Map()
@@ -48,7 +64,8 @@ class Game {
       this.players.delete(id)
     } else if (!m.solo) {
       const other = (id === m.p1.id) ? m.p2 : m.p1
-      send(other.socket, 'elim', { reason: 'Too slow!' })
+      const msg = { reason: 'Too slow! You were eliminated by: ' + p.username }
+      send(other.socket, 'elim', msg)
       this.players.delete(other.id)
       send(p.socket, 'round-end', {})
     }
@@ -62,6 +79,7 @@ class Game {
 
     this.matches = []
     const players = Array.from(this.players, ([k, v]) => v)
+    shuffle(players)
     for (let i = 0; i < players.length; i += 2) {
       const arr = players.slice(i, i + 2)
       this.matches.push(new Match(this.currentQ, arr[0], (arr.length > 1) ? arr[1] : null))
@@ -86,7 +104,7 @@ class Game {
       if (correct) {
         send(p.socket, 'round-end', {})
       } else {
-        send(p.socket, 'elim', { reason: 'Wrong answer!' })
+        send(p.socket, 'elim', { reason: 'You ran out of time!' })
         this.players.delete(p.id)
       }
     }
@@ -144,7 +162,7 @@ class Match {
           question: this.q.question,
           choices: this.q.choices
         },
-        opponent: 'answer this correctly or else'
+        opponent: 'answer this correctly or else (you are alone)'
       })
     } else {
       send(this.p1.socket, 'round-start', {
@@ -171,6 +189,7 @@ class Player {
     this.username = username
     this.id = id
     this.match = null
+    this.lives = 3
   }
 
   toString() {
@@ -187,7 +206,7 @@ const questions = [
     choices: [
       'Quentin', 'Darrin', 'Cameron', 'Travis Scott'
     ],
-    answer: 0,
+    answer: 1,
     duration: 10000
   },
   {
