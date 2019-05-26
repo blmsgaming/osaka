@@ -1,8 +1,20 @@
 const WebSocket = require('ws')
 
+const uuid = require('uuid/v1')
+
+const GameState = {
+  LOBBY: 1,
+  ROUNDS: 2
+}
+
+function send(socket, payload) {
+  socket.send(JSON.stringify(payload))
+}
+
 class Game {
   constructor() {
-    this.players = []
+    this.players = new Map()
+    this.answers = new Map()
     this.questions = [
       {
         question: `What is Mr. Cook's first name?`,
@@ -11,52 +23,50 @@ class Game {
         ]
       }
     ]
-    this.state = 'wait'
+    this.state = GameState.LOBBY
   }
 
   addPlayer(player) {
-    this.players.push(player)
+    this.players.set(player.id, player)
+  }
+
+  broadcast(data) {
+    for (const p of this.players.values()) {
+      send(p.socket, data)
+    }
+  }
+
+  handleAnswerRes(id, idx) {
+    this.answers.set(id, idx)
   }
 
   startRound() {
-    this.state = 'round'
-    const matches = []
-    const chunkSize = 2
-    for (let i = 0; i < this.players.length; i += chunkSize) {
-      const players = this.players.slice(i, i + chunkSize)
-      matches.push(new Match(this.questions[0], players))
+    this.answers = new Map()
+    for (const k of this.players.keys()) {
+      this.answers.set(k, -1)
     }
 
-    for (const match of matches) {
-      match.start()
-    }
+    this.broadcast({ eventName: 'round-start' })
+    this.state = GameState.ROUNDS
+    this.broadcast({
+      eventName: 'round-quest',
+      q: this.questions[0],
+      number: 0})
   }
 
   print() {
-    console.log(`${this.players.length} Connected clients:`)
-    for (const player of this.players) {
+    console.log(`${this.players.size} Connected clients:`)
+    for (const player of this.players.values()) {
       console.log(player.toString())
     }
   }
 }
 
-class Match {
-  constructor(question, players) {
-    this.question = question
-    this.players = players
-  }
-
-  start() {
-    for (const player of this.players) {
-      player.socket.send(JSON.stringify(this.question))
-    }
-  }
-}
-
 class Player {
-  constructor(socket, username) {
+  constructor(socket, username, id) {
     this.socket = socket
     this.username = username
+    this.id = id
   }
 
   toString() {
@@ -68,16 +78,30 @@ const game = new Game()
 const wss = new WebSocket.Server({ port: 8080 })
 wss.on('connection', socket => {
   socket.on('message', message => {
-    console.log(`received from a client: ${message}`)
+    console.log(`Message from a client: ${message}`)
     const data = JSON.parse(message)
-    game.addPlayer(new Player(socket, data.username))
-    game.print()
+    switch (data.eventName) {
+      case 'user-join':
+        const id = uuid()
+        game.addPlayer(new Player(socket, data.username, id))
+        send(socket, { eventName: 'uuid-res', id: id })
+        break
+      case 'round-res':
+        game.handleAnswerRes(data.id, data.idx)
+        break
+      default:
+        console.log(`Bad eventName: ${data.eventName}`)
+    }
   })
-  socket.send('Hello world!')
 })
 
-setInterval(() => {
-  if (game.players.length > 1 && game.state === 'wait') {
+function tick() {
+  game.print()
+  if (game.players.size > 1 && game.state === GameState.LOBBY) {
+    game.broadcast
     game.startRound()
   }
-}, 1000)
+}
+
+const ticksPerSec = 2
+setInterval(tick, 1000 / ticksPerSec)
