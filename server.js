@@ -61,18 +61,30 @@ class Game {
     this.answers.set(id, idx)
     const p = this.players.get(id)
     if (p === null) return
+
     const m = p.match
     if (!m.q.correct.includes(idx + 1)) {
-      send(p.socket, 'elim', { reason: 'Wrong answer!' })
-      this.players.delete(id)
+      p.lives--
+      if (p.lives <= 0) {
+        send(p.socket, 'elim', { reason: 'Out of lives.' })
+        this.players.delete(id)
+      }
     } else {
       if (!m.solo) {
         const other = (id === m.p1.id) ? m.p2 : m.p1
-        const msg = { reason: 'Too slow! You were eliminated by: ' + p.username }
-        send(other.socket, 'elim', msg)
-        this.players.delete(other.id)
+        other.lives--
+        this.answers.set(other.id, -2)
+        if (other.lives <= 0) {
+          const msg = { reason: 'Out of lives. You were eliminated by: ' + p.username }
+          send(other.socket, 'elim', msg)
+          this.players.delete(other.id)
+        } else {
+          send(other.socket, 'round-end', { msg: 'You lost the battle against: ' + p.username})
+        }
+        send(p.socket, 'round-end', { msg: 'You won your battle against: ' + other.username})
+      } else {
+        send(p.socket, 'round-end', { msg: 'You won your battle, but not the war'})
       }
-      send(p.socket, 'round-end', {})
     }
   }
 
@@ -108,9 +120,13 @@ class Game {
       const correct = this.currentQ.correct.includes(ans + 1)
       if (correct) {
         send(p.socket, 'round-end', {})
-      } else {
-        send(p.socket, 'elim', { reason: 'You ran out of time!' })
-        this.players.delete(p.id)
+      } else if (ans === -1) {
+        // Didn't answer
+        p.lives--
+        if (p.lives <= 0) {
+          send(p.socket, 'elim', { reason: 'You ran out of time!' })
+          this.players.delete(p.id)
+        }
       }
     }
 
@@ -169,16 +185,25 @@ class Match {
     if (this.solo) {
       send(this.p1.socket, 'round-start', {
         q: q,
+        lives: this.p1.lives,
         opponent: 'answer this correctly or else (you are alone)'
       })
     } else {
       send(this.p1.socket, 'round-start', {
         q: q,
-        opponent: this.p2.username
+        lives: this.p1.lives,
+        opponent: {
+          username: this.p2.username,
+          lives: this.p2.lives
+        }
       })
       send(this.p2.socket, 'round-start', {
         q: q,
-        opponent: this.p1.username
+        lives: this.p2.lives,
+        opponent: {
+          username: this.p1.username,
+          lives: this.p1.lives
+        }
       })
     }
   }
@@ -227,7 +252,7 @@ const wss = new WebSocket.Server({ server: app.listen(8080) })
 //     duration: 10000
 //   }
 // ]
-const game = new Game(questions, 10000)
+const game = new Game(questions, 20000)
 
 wss.on('connection', socket => {
   socket.on('message', message => {
