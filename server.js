@@ -1,7 +1,8 @@
 const WebSocket = require('ws')
 const express = require('express')
-
+const path = require('path')
 const uuid = require('uuid/v1')
+
 const questions = require('./data.json').questionSet
 
 const GameState = {
@@ -61,7 +62,6 @@ class Game {
     const p = this.players.get(id)
     if (p === null) return
     const m = p.match
-    console.log(m.q.correct.includes(idx + 1))
     if (!m.q.correct.includes(idx + 1)) {
       send(p.socket, 'elim', { reason: 'Wrong answer!' })
       this.players.delete(id)
@@ -200,6 +200,14 @@ class Player {
 
 const app = express()
 app.use(express.static('../cairo'))
+
+const adminApp = express()
+adminApp.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'))
+})
+adminApp.use(express.static(path.join(__dirname, 'admin')))
+adminApp.listen(3000)
+
 const wss = new WebSocket.Server({ server: app.listen(8080) })
 // const questions = [
 //   {
@@ -223,7 +231,7 @@ const game = new Game(questions, 10000)
 
 wss.on('connection', socket => {
   socket.on('message', message => {
-    console.log(`Message from a client: ${message}`)
+    // console.log(`Message from a client: ${message}`)
     const data = JSON.parse(message)
     switch (data.eventName) {
       case 'user-join':
@@ -241,6 +249,10 @@ wss.on('connection', socket => {
         break
       case 'round-res':
         game.handleAnswerRes(data.user.id, data.idx)
+        break
+      case 'admin-start-game':
+        game.start()
+        game.startRound()
         break
       default:
         console.log(`Bad eventName: ${data.eventName}`)
@@ -269,5 +281,6 @@ function tick() {
   }
 }
 
-const ticksPerSec = 2
+// const ticksPerSec = 2
+const ticksPerSec = 10
 const intervalId = setInterval(tick, 1000 / ticksPerSec)
