@@ -1,5 +1,5 @@
 const WebSocket = require('ws')
-const url = 'ws://b81927e3.ngrok.io'
+const url = 'ws://daad93b2.ngrok.io'
 const socket = new WebSocket(url)
 
 let state = {}

@@ -2,6 +2,7 @@ const WebSocket = require('ws')
 const express = require('express')
 
 const uuid = require('uuid/v1')
+const questions = require('./data.json').questionSet
 
 const GameState = {
   LOBBY: 1,
@@ -30,12 +31,13 @@ function shuffle(array) {
 }
 
 class Game {
-  constructor(questions) {
+  constructor(questions, duration) {
     this.players = new Map()
     this.state = GameState.LOBBY
     this.roundNumber = 0
     this.roundStart = 0
     this.questions = questions
+    this.duration = duration
     this.answers = null
     this.matches = null
   }
@@ -59,14 +61,17 @@ class Game {
     const p = this.players.get(id)
     if (p === null) return
     const m = p.match
-    if (idx !== m.q.answer) {
+    console.log(m.q.correct.includes(idx + 1))
+    if (!m.q.correct.includes(idx + 1)) {
       send(p.socket, 'elim', { reason: 'Wrong answer!' })
       this.players.delete(id)
-    } else if (!m.solo) {
-      const other = (id === m.p1.id) ? m.p2 : m.p1
-      const msg = { reason: 'Too slow! You were eliminated by: ' + p.username }
-      send(other.socket, 'elim', msg)
-      this.players.delete(other.id)
+    } else {
+      if (!m.solo) {
+        const other = (id === m.p1.id) ? m.p2 : m.p1
+        const msg = { reason: 'Too slow! You were eliminated by: ' + p.username }
+        send(other.socket, 'elim', msg)
+        this.players.delete(other.id)
+      }
       send(p.socket, 'round-end', {})
     }
   }
@@ -94,13 +99,13 @@ class Game {
   }
 
   roundShouldEnd() {
-    return Date.now() - this.roundStart > this.currentQ.duration
+    return Date.now() - this.roundStart > this.duration
   }
 
   advanceRound() {
     for (const p of this.players.values()) {
       const ans = this.answers.get(p.id)
-      const correct = (ans === this.currentQ.answer)
+      const correct = this.currentQ.correct.includes(ans + 1)
       if (correct) {
         send(p.socket, 'round-end', {})
       } else {
@@ -132,7 +137,7 @@ class Game {
   }
 
   tick() {
-    const left = this.currentQ.duration - (Date.now() - this.roundStart)
+    const left = this.duration - (Date.now() - this.roundStart)
     this.broadcast('round-tick', { timeLeft: left })
   }
 
@@ -156,27 +161,23 @@ class Match {
   }
 
   startRound(game) {
+    const q = {
+      question: this.q.question,
+      choices: this.q.choices,
+      url: this.q.imgURL
+    }
     if (this.solo) {
       send(this.p1.socket, 'round-start', {
-        q: {
-          question: this.q.question,
-          choices: this.q.choices
-        },
+        q: q,
         opponent: 'answer this correctly or else (you are alone)'
       })
     } else {
       send(this.p1.socket, 'round-start', {
-        q: {
-          question: this.q.question,
-          choices: this.q.choices
-        },
+        q: q,
         opponent: this.p2.username
       })
       send(this.p2.socket, 'round-start', {
-        q: {
-          question: this.q.question,
-          choices: this.q.choices
-        },
+        q: q,
         opponent: this.p1.username
       })
     }
@@ -200,25 +201,25 @@ class Player {
 const app = express()
 app.use(express.static('../cairo'))
 const wss = new WebSocket.Server({ server: app.listen(8080) })
-const questions = [
-  {
-    question: `What is Mr. Cook's first name?`,
-    choices: [
-      'Quentin', 'Darrin', 'Cameron', 'Travis Scott'
-    ],
-    answer: 1,
-    duration: 10000
-  },
-  {
-    question: "What org did Kampy play for?",
-    choices: [
-      'FaZe', 'Optic', 'BLMS', 'Liquid'
-    ],
-    answer: 0,
-    duration: 10000
-  }
-]
-const game = new Game(questions)
+// const questions = [
+//   {
+//     question: `What is Mr. Cook's first name?`,
+//     choices: [
+//       'Quentin', 'Darrin', 'Cameron', 'Travis Scott'
+//     ],
+//     answer: 1,
+//     duration: 10000
+//   },
+//   {
+//     question: "What org did Kampy play for?",
+//     choices: [
+//       'FaZe', 'Optic', 'BLMS', 'Liquid'
+//     ],
+//     answer: 0,
+//     duration: 10000
+//   }
+// ]
+const game = new Game(questions, 10000)
 
 wss.on('connection', socket => {
   socket.on('message', message => {
