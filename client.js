@@ -31,7 +31,14 @@ socket.addEventListener('message', event => {
       break
     case 'round-quest':
       state.q = data.q
-      send('round-res', { idx: 1 })
+      send('round-res', { idx: Math.floor(4 * Math.random()) })
+      break
+    case 'round-end':
+      if (data.correct) {
+        console.log('Answer was correct!')
+      } else {
+        console.log('Wrong answer')
+      }
       break
     default:
       console.log(`Bad eventName: ${data.eventName}`)

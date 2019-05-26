@@ -7,36 +7,37 @@ const GameState = {
   ROUNDS: 2
 }
 
-function send(socket, payload) {
-  socket.send(JSON.stringify(payload))
+function send(socket, eventName, payload) {
+  const merged = { eventName: eventName, ...payload}
+  socket.send(JSON.stringify(merged))
 }
 
 class Game {
-  constructor() {
+  constructor(questions) {
     this.players = new Map()
-    this.answers = new Map()
-    this.questions = [
-      {
-        question: `What is Mr. Cook's first name?`,
-        answers: [
-          'Quentin', 'Darrin', 'Cameron', 'Travis Scott'
-        ]
-      }
-    ]
     this.state = GameState.LOBBY
+    this.roundNumber = 0
+    this.roundStart = 0
+    this.questions = questions
+    this.answers = null
+  }
+
+  get currentQ() {
+    return this.questions[this.roundNumber]
   }
 
   addPlayer(player) {
     this.players.set(player.id, player)
   }
 
-  broadcast(data) {
+  broadcast(eventName, data) {
     for (const p of this.players.values()) {
-      send(p.socket, data)
+      send(p.socket, eventName, data)
     }
   }
 
   handleAnswerRes(id, idx) {
+    console.log(id + ' ' + idx)
     this.answers.set(id, idx)
   }
 
@@ -45,13 +46,36 @@ class Game {
     for (const k of this.players.keys()) {
       this.answers.set(k, -1)
     }
-
-    this.broadcast({ eventName: 'round-start' })
+    this.broadcast('round-start', {})
     this.state = GameState.ROUNDS
-    this.broadcast({
-      eventName: 'round-quest',
-      q: this.questions[0],
-      number: 0})
+    this.broadcast('round-quest', {
+      q: this.currentQ,
+      roundNumber: this.roundNumber
+    })
+    this.roundStart = Date.now()
+  }
+
+  roundShouldEnd() {
+    return Date.now() - this.roundStart > this.currentQ.duration
+  }
+
+  advanceRound() {
+    for (const p of game.players.values()) {
+      const ans = this.answers.get(p.id)
+      console.log(`${this.currentQ.answer}, ${ans}`)
+      const correct = (ans === this.currentQ.answer)
+      send(p.socket, 'round-end', { correct: correct })
+    }
+    this.roundNumber++
+  }
+
+  isFinished() {
+    return this.roundNumber >= this.questions.length
+  }
+
+  tick() {
+    const left = this.currentQ.duration - (Date.now() - this.roundStart)
+    this.broadcast('round-tick', { timeLeft: left })
   }
 
   print() {
@@ -74,8 +98,19 @@ class Player {
   }
 }
 
-const game = new Game()
 const wss = new WebSocket.Server({ port: 8080 })
+const questions = [
+  {
+    question: `What is Mr. Cook's first name?`,
+    choices: [
+      'Quentin', 'Darrin', 'Cameron', 'Travis Scott'
+    ],
+    answer: 0,
+    duration: 2000
+  }
+]
+const game = new Game(questions)
+
 wss.on('connection', socket => {
   socket.on('message', message => {
     console.log(`Message from a client: ${message}`)
@@ -84,10 +119,11 @@ wss.on('connection', socket => {
       case 'user-join':
         const id = uuid()
         game.addPlayer(new Player(socket, data.username, id))
-        send(socket, { eventName: 'uuid-res', id: id })
+        send(socket, 'uuid-res', { id: id })
         break
       case 'round-res':
-        game.handleAnswerRes(data.id, data.idx)
+        console.log(data.idx)
+        game.handleAnswerRes(data.user.id, data.idx)
         break
       default:
         console.log(`Bad eventName: ${data.eventName}`)
@@ -98,10 +134,19 @@ wss.on('connection', socket => {
 function tick() {
   game.print()
   if (game.players.size > 1 && game.state === GameState.LOBBY) {
-    game.broadcast
     game.startRound()
+  }
+
+  if (game.state === GameState.ROUNDS) {
+    if (game.roundShouldEnd()) {
+      game.advanceRound()
+      if (game.isFinished())
+        clearInterval(intervalId)
+    } else {
+      game.tick()
+    }
   }
 }
 
 const ticksPerSec = 2
-setInterval(tick, 1000 / ticksPerSec)
+const intervalId = setInterval(tick, 1000 / ticksPerSec)
