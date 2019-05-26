@@ -21,6 +21,7 @@ class Game {
     this.roundStart = 0
     this.questions = questions
     this.answers = null
+    this.matches = null
   }
 
   get currentQ() {
@@ -39,6 +40,18 @@ class Game {
 
   handleAnswerRes(id, idx) {
     this.answers.set(id, idx)
+    const p = this.players.get(id)
+    if (p === null) return
+    const m = p.match
+    if (idx !== m.q.answer) {
+      send(p.socket, 'elim', { reason: 'Wrong answer!' })
+      this.players.delete(id)
+    } else if (!m.solo) {
+      const other = (id === m.p1.id) ? m.p2 : m.p1
+      send(other.socket, 'elim', { reason: 'Too slow!' })
+      this.players.delete(other.id)
+      send(p.socket, 'round-end', {})
+    }
   }
 
   startRound() {
@@ -46,13 +59,18 @@ class Game {
     for (const k of this.players.keys()) {
       this.answers.set(k, -1)
     }
-    this.broadcast('round-start', {
-      q: {
-        question: this.currentQ.question,
-        choices: this.currentQ.choices
-      },
-      roundNumber: this.roundNumber
-    })
+
+    this.matches = []
+    const players = Array.from(this.players, ([k, v]) => v)
+    for (let i = 0; i < players.length; i += 2) {
+      const arr = players.slice(i, i + 2)
+      this.matches.push(new Match(this.currentQ, arr[0], (arr.length > 1) ? arr[1] : null))
+    }
+
+    for (const m of this.matches) {
+      m.startRound(this)
+    }
+
     this.state = GameState.BATTLE
     this.roundStart = Date.now()
   }
@@ -62,10 +80,19 @@ class Game {
   }
 
   advanceRound() {
-    for (const p of game.players.values()) {
+    for (const p of this.players.values()) {
       const ans = this.answers.get(p.id)
       const correct = (ans === this.currentQ.answer)
-      send(p.socket, 'round-end', { correct: correct })
+      if (correct) {
+        send(p.socket, 'round-end', {})
+      } else {
+        send(p.socket, 'elim', { reason: 'Wrong answer!' })
+        this.players.delete(p.id)
+      }
+    }
+
+    if (this.players.size === 1 || this.players.size === 0) {
+      this.roundNumber = this.questions.length
     }
     this.roundNumber++
   }
@@ -79,6 +106,7 @@ class Game {
   }
 
   end() {
+    this.broadcast('game-winner', {})
     this.broadcast('game-end', {})
     for (const p of this.players.values()) {
       p.socket.close()
@@ -98,11 +126,51 @@ class Game {
   }
 }
 
+class Match {
+  constructor(q, p1, p2) {
+    this.q = q
+    this.p1 = p1
+    this.p2 = p2
+    this.solo = (p2 === null)
+
+    this.p1.match = this
+    if (!this.solo) this.p2.match = this
+  }
+
+  startRound(game) {
+    if (this.solo) {
+      send(this.p1.socket, 'round-start', {
+        q: {
+          question: this.q.question,
+          choices: this.q.choices
+        },
+        opponent: 'answer this correctly or else'
+      })
+    } else {
+      send(this.p1.socket, 'round-start', {
+        q: {
+          question: this.q.question,
+          choices: this.q.choices
+        },
+        opponent: this.p2.username
+      })
+      send(this.p2.socket, 'round-start', {
+        q: {
+          question: this.q.question,
+          choices: this.q.choices
+        },
+        opponent: this.p1.username
+      })
+    }
+  }
+}
+
 class Player {
   constructor(socket, username, id) {
     this.socket = socket
     this.username = username
     this.id = id
+    this.match = null
   }
 
   toString() {
