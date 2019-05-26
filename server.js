@@ -4,7 +4,7 @@ const uuid = require('uuid/v1')
 
 const GameState = {
   LOBBY: 1,
-  ROUNDS: 2
+  BATTLE: 2
 }
 
 function send(socket, eventName, payload) {
@@ -45,20 +45,14 @@ class Game {
     for (const k of this.players.keys()) {
       this.answers.set(k, -1)
     }
-    this.broadcast('round-start', {})
-    this.state = GameState.ROUNDS
-    
-    const q = {
-      question: this.currentQ.question,
-      choices: this.currentQ.choices
-    }
-    this.broadcast('round-quest', {
+    this.broadcast('round-start', {
       q: {
         question: this.currentQ.question,
         choices: this.currentQ.choices
       },
       roundNumber: this.roundNumber
     })
+    this.state = GameState.BATTLE
     this.roundStart = Date.now()
   }
 
@@ -169,7 +163,7 @@ function tick() {
     return
   }
 
-  if (game.state === GameState.ROUNDS) {
+  if (game.state === GameState.BATTLE) {
     if (game.roundShouldEnd()) {
       game.advanceRound()
       if (game.isFinished()) {
