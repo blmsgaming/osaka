@@ -1,4 +1,5 @@
 const WebSocket = require('ws')
+const express = require('express')
 
 const uuid = require('uuid/v1')
 
@@ -109,7 +110,9 @@ class Player {
   }
 }
 
-const wss = new WebSocket.Server({ port: 8080 })
+const app = express()
+app.use(express.static('../cairo'))
+const wss = new WebSocket.Server({ server: app.listen(8080) })
 const questions = [
   {
     question: `What is Mr. Cook's first name?`,
