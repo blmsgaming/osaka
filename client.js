@@ -1,5 +1,6 @@
 const WebSocket = require('ws')
-const socket = new WebSocket('ws://localhost:8080')
+const url = 'ws://b81927e3.ngrok.io'
+const socket = new WebSocket(url)
 
 let state = {}
 
@@ -21,7 +22,7 @@ socket.addEventListener('open', () => {
 })
 
 socket.addEventListener('message', event => {
-  console.log(`Message from server: ${event.data}`)
+  // console.log(`Message from server: ${event.data}`)
   const data = JSON.parse(event.data)
   switch (data.eventName) {
     case 'uuid-res':

@@ -47,8 +47,16 @@ class Game {
     }
     this.broadcast('round-start', {})
     this.state = GameState.ROUNDS
+    
+    const q = {
+      question: this.currentQ.question,
+      choices: this.currentQ.choices
+    }
     this.broadcast('round-quest', {
-      q: this.currentQ,
+      q: {
+        question: this.currentQ.question,
+        choices: this.currentQ.choices
+      },
       roundNumber: this.roundNumber
     })
     this.roundStart = Date.now()
@@ -69,6 +77,10 @@ class Game {
 
   isFinished() {
     return this.roundNumber >= this.questions.length
+  }
+
+  start() {
+    this.broadcast('game-start', {})
   }
 
   end() {
@@ -111,7 +123,7 @@ const questions = [
       'Quentin', 'Darrin', 'Cameron', 'Travis Scott'
     ],
     answer: 0,
-    duration: 2000
+    duration: 10000
   },
   {
     question: "What org did Kampy play for?",
@@ -119,7 +131,7 @@ const questions = [
       'FaZe', 'Optic', 'BLMS', 'Liquid'
     ],
     answer: 0,
-    duration: 1500
+    duration: 10000
   }
 ]
 const game = new Game(questions)
@@ -134,6 +146,14 @@ wss.on('connection', socket => {
         game.addPlayer(new Player(socket, data.username, id))
         send(socket, 'uuid-res', { id: id })
         break
+      case 'lobby-req':
+        const li = Array.from(game.players, ([key, value]) => value.username)
+        send(socket, 'lobby-res', { users: li })
+        break
+      case 'game-start-req':
+        game.start()
+        game.startRound()
+        break
       case 'round-res':
         game.handleAnswerRes(data.user.id, data.idx)
         break
@@ -147,10 +167,6 @@ function tick() {
   if (game.isFinished()) {
     clearInterval(intervalId)
     return
-  }
-  // game.print()
-  if (game.players.size > 1 && game.state === GameState.LOBBY) {
-    game.startRound()
   }
 
   if (game.state === GameState.ROUNDS) {
