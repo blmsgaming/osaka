@@ -3,7 +3,7 @@ const express = require('express')
 const path = require('path')
 const uuid = require('uuid/v1')
 
-const questions = require('./data.json').questionSet
+const questions = require('./cities.json').questionSet
 
 const GameState = {
   LOBBY: 1,
@@ -37,7 +37,9 @@ class Game {
     this.state = GameState.LOBBY
     this.roundNumber = 0
     this.roundStart = 0
+    this.waitStart = 0
     this.questions = questions
+    shuffle(this.questions)
     this.duration = duration
     this.answers = null
     this.matches = null
@@ -68,6 +70,8 @@ class Game {
       if (p.lives <= 0) {
         send(p.socket, 'elim', { reason: 'Out of lives.' })
         this.players.delete(id)
+      } else {
+        send(p.socket, 'round-end', { msg: 'You got the question wrong.' })
       }
     } else {
       if (!m.solo) {
@@ -111,6 +115,15 @@ class Game {
   }
 
   roundShouldEnd() {
+    let allAnswered = true
+    for (const p of this.players.values()) {
+      if (this.answers.get(p.id) === -1) {
+        allAnswered = false
+        break
+      }
+    }
+    if (allAnswered) return true
+
     return Date.now() - this.roundStart > this.duration
   }
 
@@ -118,9 +131,11 @@ class Game {
     for (const p of this.players.values()) {
       const ans = this.answers.get(p.id)
       const correct = this.currentQ.correct.includes(ans + 1)
-      if (correct) {
-        send(p.socket, 'round-end', {})
-      } else if (ans === -1) {
+      // if (correct) {
+      //   send(p.socket, 'round-end', {})
+      // } else if (ans === -1) {
+      if (ans === -1) {
+
         // Didn't answer
         p.lives--
         if (p.lives <= 0) {
@@ -293,15 +308,26 @@ function tick() {
 
   if (game.state === GameState.BATTLE) {
     if (game.roundShouldEnd()) {
+      const ans = game.currentQ.choices[game.currentQ.correct[0] - 1]
       game.advanceRound()
       if (game.isFinished()) {
         clearInterval(intervalId)
         game.end()
       } else {
-        game.startRound()
+        game.state = GameState.WAIT
+        game.waitStart = Date.now()
+        game.broadcast('round-wait', { correctChoice: ans })
       }
     } else {
       game.tick()
+    }
+  }
+
+  if (game.state === GameState.WAIT) {
+    const delay = 5000
+    if (Date.now() - game.waitStart > delay) {
+      game.state = GameState.BATTLE
+      game.startRound()
     }
   }
 }

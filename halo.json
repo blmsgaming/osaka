@@ -1,0 +1,497 @@
+{
+  "gameTitle": "Halo",
+  "description": "Halo Stuff",
+  "titleImg": "",
+  "questionSet": [
+    {
+      "question": "What is the UNSC\u0027s Logo?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/382155c4-725e-43b8-84f2-d37b85eb3519",
+      "choices": [
+        "An eagle with a shield",
+        "A lion",
+        "An Alligator",
+        "A helmet"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "Why does the UNSC fight the Covenant?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/c40e90a2-7949-43b3-acab-1038adeef46d",
+      "choices": [
+        "To fight for freedom",
+        "To kill all the aliens",
+        "Just for fun",
+        "To prevent the extinction of the human race"
+      ],
+      "correct": [
+        4
+      ]
+    },
+    {
+      "question": "What year did the Human Covenant war start?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/1db6b6a8-4da9-481e-9eac-9f3bc14ba449",
+      "choices": [
+        "2525",
+        "2052",
+        "2552",
+        "2004"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "What is the UNSC\u0027s trademark vehicle?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/4730bc27-f1aa-4295-9742-b7281be4197e",
+      "choices": [
+        "The mongoose",
+        "The pelican",
+        "The warthog",
+        "The scorpion"
+      ],
+      "correct": [
+        3
+      ]
+    },
+    {
+      "question": "What is the name of the all consuming Parasite?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/06e4614a-d06b-47cd-9181-3cb37b79e4fc",
+      "choices": [
+        "The flood",
+        "Zombies",
+        "The Black-wing Virus",
+        "Element 115"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "What is the Main line soldier of the UNSC?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/d64ec4a0-c70a-4aaf-9d94-822cda21b764",
+      "choices": [
+        "The marines",
+        "The grunts",
+        "Spartans",
+        "ODSTs"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "What does O.D.S.T. stand for",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/ee516212-9c3c-4db7-bb08-53105d630510",
+      "choices": [
+        "Oblivious Death Squad Troopers",
+        "Overpowered Deadly Soldier Team",
+        "Orbital Drop Shock Troopers",
+        "Um, what is an ODST?"
+      ],
+      "correct": [
+        3
+      ]
+    },
+    {
+      "question": "What Forerunner shield world did the Master Chief land on?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/ba362b71-cedc-40eb-8135-de08b06a8e1b",
+      "choices": [
+        "Sanghelios",
+        "Requiem",
+        "The Ark",
+        "Instillation 04"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "question": "What Tank is This",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/c30bfd7e-8d6f-4f8d-a6b2-9a22508da804",
+      "choices": [
+        "Scorpion",
+        "Mammoth",
+        "Grizzly",
+        "Rhino"
+      ],
+      "correct": [
+        3
+      ]
+    },
+    {
+      "question": "What is the Trademark AIR vehicle of the UNSC",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/ff827296-3b7e-4ebb-98e2-4daa9db00635",
+      "choices": [
+        "Falcon",
+        "Wasp",
+        "Hornet",
+        "Pelican"
+      ],
+      "correct": [
+        4
+      ]
+    },
+    {
+      "question": "What is the name of the largest UNSC warship?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/6f2f66b1-15ac-44a0-bbd6-1fde503e84b1",
+      "choices": [
+        "Forward unto Dawn",
+        "Piller of Autumn",
+        "Spirit of Fire",
+        "Infinity"
+      ],
+      "correct": [
+        4
+      ]
+    },
+    {
+      "question": "What kind of ship is split in half in Halo 4?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/1442a071-4d93-486a-b04f-11928a823547",
+      "choices": [
+        "Paris class",
+        "Strident Class",
+        "Reunion Class",
+        "Phoenix Class"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "question": "What was the number of alpha halo?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/8e05c922-639f-4d1f-b990-e33bf29114c0",
+      "choices": [
+        "04",
+        "00",
+        "05",
+        "03"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "What was the name of the captain of the ship \"Spirit of Fire\"?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/3a40c70e-8247-48bf-b58f-7d5503b14751",
+      "choices": [
+        "Thomas Lasky",
+        "Jacob Keyes",
+        "James Cutter",
+        "Miranda Keyes"
+      ],
+      "correct": [
+        3
+      ]
+    },
+    {
+      "question": "Who was one of Master Chief\u0027s best friends?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/aa0ef837-2a9f-434a-a5cd-859cd0f2e6cc",
+      "choices": [
+        "Sargent Johnson",
+        "Sargent Forge",
+        "Captain Del Rio",
+        "Chief Petty Officer Mendez"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "Who were the members of Red Team?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/083a8f02-b5f5-4ecf-a15a-3a9adda7b143",
+      "choices": [
+        "John, Kelly, Linda, Frederic",
+        "Jerome, Douglas, Alice",
+        "Vale, Locke, Buck, Tanaka",
+        "Thorn, DeMarco, Grant, Hoya, Madsen"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "question": "Who is the leader of Fireteam Majestic?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/e59dfafa-05f9-4de8-abc1-969e3e889ad6",
+      "choices": [
+        "Paul DeMarco",
+        "Gabriel Thorn",
+        "Carlo Hoya",
+        "Anthony Madsen"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "How long did the Spirit of Fire drift in space for?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/586f0cef-fba8-4ea7-a897-ea2a4446e22f",
+      "choices": [
+        "28 Years",
+        "5 Days",
+        "4 Years, 9 Months, and 23 Days",
+        "80 Years"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "What fireteam do you play as in Spartan Ops?",
+      "timeLimit": "20 sec",
+      "imgURL": "https://images-cdn.kahoot.it/69dccaa4-3cce-4ef2-99e9-2b7031821e9a",
+      "choices": [
+        "Crimson",
+        "Majestic",
+        "Castle",
+        "Rhino"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "How many members are on Blue Team?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/18545788-0969-4db2-86f1-52b0ba7f86ff",
+      "choices": [
+        "3",
+        "6",
+        "9",
+        "4"
+      ],
+      "correct": [
+        4
+      ]
+    },
+    {
+      "question": "What alien race was betrayed by the covenant?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/b25c7711-6f15-4293-a1bf-89c391fdbb38",
+      "choices": [
+        "The grunts",
+        "The brutes",
+        "The elites",
+        "The Jackals"
+      ],
+      "correct": [
+        3
+      ]
+    },
+    {
+      "question": "Why do the grunts respect the elites so much?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/2b4d2b31-cf5a-4f69-b423-d13e3aac1dbb",
+      "choices": [
+        "Because they just can",
+        "They where good fighters",
+        "They were the only species kind to them after the rebellion",
+        "No reason"
+      ],
+      "correct": [
+        3
+      ]
+    },
+    {
+      "question": "What two Spartans are in this picture?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/27e35578-c79b-4387-a8f4-7cff2ebda9ce",
+      "choices": [
+        "Jun and Noble 6",
+        "Emile and Carter",
+        "Emile and Jun",
+        "Kat and Jorge"
+      ],
+      "correct": [
+        3
+      ]
+    },
+    {
+      "question": "What was the first UNSC engagement with the covenant?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/04059eab-5dc7-4d05-b5a0-ffda62271588",
+      "choices": [
+        "Harvest",
+        "Reach",
+        "Earth",
+        "Arcadia"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "What is this fighter called?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/112fad36-84c0-4f0c-b52b-29c53ff3ecb5",
+      "choices": [
+        "F-41 Broadsword",
+        "UH-144 Falcon",
+        "AV-22 Sparowhawk",
+        "AV-12 Hornet"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "What does U.N.S.C stand for?",
+      "timeLimit": "20 sec",
+      "imgURL": "https://images-cdn.kahoot.it/f75f9f90-0594-44b0-9372-4d9b23b23535",
+      "choices": [
+        "United Nations Space Corps",
+        "United Nations Space Command",
+        "United Nations Space Company",
+        "United Nation Space Corp"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "question": "How old were the Spartan 2s when they were kidnapped?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/f120afeb-15b4-4012-a77d-f26eccbc34ed",
+      "choices": [
+        "12",
+        "6",
+        "14",
+        "3"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "question": "How tall is Master Chief?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/c49f88e1-2f38-4c82-8fb5-1daa47648eaf",
+      "choices": [
+        "6 ft. 3 in.",
+        "7 ft. 2 in.",
+        "9 ft. 10 in.",
+        "3 ft. 1 in."
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "question": "What was the name of the first Spartan to die in combat?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/bfe0564b-f6d0-4f05-a151-128a6592af34",
+      "choices": [
+        "Sam-034",
+        "Jerome-092",
+        "Kelly-087",
+        "John-117"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "How did he Die?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/c826a026-f58d-45e4-9492-a01418617b06",
+      "choices": [
+        "Shot by an Elite",
+        "Detonating an HAVOC nuclear warhead",
+        "Died in a mine",
+        "Fell into a Slip space portal"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "question": "What was the most important battle in the war?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/1deaf6e1-f809-4fe9-9a0e-4fb34a7e5cf0",
+      "choices": [
+        "Earth",
+        "Reach",
+        "Eridanus II",
+        "Harvest"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "question": "How long did the 2nd battle of Harvest last?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/29b00bfb-1adc-43e3-9715-b0f7524fb160",
+      "choices": [
+        "3 months",
+        "4 days?",
+        "5 years",
+        "20 years"
+      ],
+      "correct": [
+        3
+      ]
+    },
+    {
+      "question": "What was the name of the Covenant CSO class super-carrier you destroy in Halo Reach?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/8511a974-4704-4d18-976b-1da2121073e8",
+      "choices": [
+        "Truth and Reconciliation",
+        "Long Night of Solace",
+        "Shadow of Intent",
+        "High Charity"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "question": "What is the name of the UNSC Infinity\u0027s sister ship that is still under construction?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/1e4d177d-f1ea-40ff-93fe-8a1b55c50206",
+      "choices": [
+        "UNSC In Amber Clad",
+        "UNSC Strident",
+        "UNSC Eternity",
+        "UNSC Piller of Autumn"
+      ],
+      "correct": [
+        3
+      ]
+    },
+    {
+      "question": "What is the name of Shipmaster Thel Vadam\u0027s Fleet?",
+      "timeLimit": "30 sec",
+      "imgURL": "https://images-cdn.kahoot.it/8dadc0e8-9e0c-4fa8-8227-3d262d0e54cb",
+      "choices": [
+        "The Guardian Fleet",
+        "The Fleet of Particular Justice",
+        "The Fleet of Vadam",
+        "The Holy Fleet"
+      ],
+      "correct": [
+        2
+      ]
+    }
+  ]
+}

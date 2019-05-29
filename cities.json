@@ -1,0 +1,204 @@
+{
+    "gameTitle": "Guess the City",
+    "description": "Watch the pictures and guess the #city ! See how well you can recognize the different #cities ! #geography #gifreveal #studio",
+    "titleImg": "https://images-cdn.kahoot.it/3feceab5-a862-4abe-8aa6-bad04d2689d7",
+    "questionSet": [
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/c4f6b515-9d9e-4185-b2e2-dc15a3d0b49c",
+        "choices": [
+          "Athens",
+          "Florence",
+          "Rome",
+          "Paris"
+        ],
+        "correct": [
+          3
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/03501d3f-32d8-4304-81e9-563d94edcbdc",
+        "choices": [
+          "Tokyo",
+          "Chicago",
+          "San Francisco",
+          "New York City"
+        ],
+        "correct": [
+          4
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/f015f56e-5e66-4df4-ab77-bea622e36aba",
+        "choices": [
+          "Paris",
+          "London",
+          "Liverpool",
+          "Glasgow"
+        ],
+        "correct": [
+          2
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/c7e827b9-bccb-41a7-a281-1f3f38336109",
+        "choices": [
+          "Nice",
+          "Madrid",
+          "Barcelona",
+          "Paris"
+        ],
+        "correct": [
+          4
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/e18077a0-fcee-4584-af2c-a37661102fbb",
+        "choices": [
+          "Jerusalem",
+          "Cairo",
+          "Baghdad",
+          "Istanbul"
+        ],
+        "correct": [
+          4
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/c896e5ef-7125-4930-a588-b74540292ad4",
+        "choices": [
+          "Athens",
+          "Istanbul",
+          "Valencia",
+          "Florence"
+        ],
+        "correct": [
+          1
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/22bba872-0bb2-4766-9efd-b4d86c0883cf",
+        "choices": [
+          "Florence",
+          "Madrid",
+          "Venice",
+          "Barcelona"
+        ],
+        "correct": [
+          4
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/0244ef4e-5d87-41d6-a7c4-4cb7bb89638d",
+        "choices": [
+          "Los Angeles",
+          "San Francisco",
+          "New Orleans",
+          "St. Louis"
+        ],
+        "correct": [
+          2
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/c598c113-83eb-4a1b-a901-34f72d27170d",
+        "choices": [
+          "Moscow",
+          "St. Petersburg",
+          "Kraków",
+          "Warsaw"
+        ],
+        "correct": [
+          1
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/0fa6e11d-7ddc-41a5-aa9e-3756b0fa02ef",
+        "choices": [
+          "Chicago",
+          "St. Louis",
+          "Washington DC",
+          "Orlando"
+        ],
+        "correct": [
+          2
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/7d5b89ba-15a6-4ad6-8d3e-727b977869a1",
+        "choices": [
+          "Florence",
+          "Amsterdam",
+          "Venice",
+          "Copenhagen"
+        ],
+        "correct": [
+          3
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/60fe4cb9-1dac-4516-9592-4edb15b3faef",
+        "choices": [
+          "Canberra",
+          "Copenhagen",
+          "Sydney",
+          "Amsterdam"
+        ],
+        "correct": [
+          3
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/7392d190-b03a-4ce7-bb63-8a84f249c796",
+        "choices": [
+          "Shanghai",
+          "Hong Kong",
+          "Beijing",
+          "Tokyo"
+        ],
+        "correct": [
+          3
+        ]
+      },
+      {
+        "question": "What city is this?",
+        "timeLimit": "20 sec",
+        "imgURL": "https://images-cdn.kahoot.it/d22d21a9-5978-41c7-91fa-9f28a5ba99cb",
+        "choices": [
+          "Bangkok",
+          "Tokyo",
+          "Seoul",
+          "Hong Kong"
+        ],
+        "correct": [
+          2
+        ]
+      }
+    ]
+  }
+  
